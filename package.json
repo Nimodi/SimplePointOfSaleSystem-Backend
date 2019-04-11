@@ -1,0 +1,34 @@
+{
+  "name": "simple_pos__system",
+  "version": "1.0.0",
+  "description": "simple point of sale system developed using node and react",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nimodi/SimplePointOfSaleSystem.git"
+  },
+  "keywords": [
+    "express",
+    "rest",
+    "api",
+    "mongoDB",
+    "node"
+  ],
+  "author": "nimodi madubhashini",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Nimodi/SimplePointOfSaleSystem/issues"
+  },
+  "homepage": "https://github.com/Nimodi/SimplePointOfSaleSystem#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "joi": "^14.3.1",
+    "joi-objectid": "^2.0.0",
+    "mongoose": "^5.4.19"
+  }
+}
