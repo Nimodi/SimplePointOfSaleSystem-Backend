@@ -1,12 +1,21 @@
 module.exports = app => {
   const orders = require("../controllers/order.controller.js");
 
-  // Create a new Note
+  // Create a new order
   app.post("/orders", orders.create);
 
-  // Retrieve all Notes
+  //Create items
+  app.post("/items", orders.itemcreate);
+
+  //create a new item for existing order
+  app.post("/orders/:orderId", orders.createItem);
+
+  // Retrieve all orders
+
   app.get("/orders", orders.findAll);
 
+  //get all items
+  app.get("/items", orders.findAllItems);
   // Retrieve a single Note with noteId
   app.get("/orders/:orderId", orders.findOneOrder);
   app.get("/orders/items/:itemId", orders.findOneItem);
@@ -17,5 +26,9 @@ module.exports = app => {
   // Delete a Note with noteId
   app.delete("/orders/:orderId", orders.delete);
 
-  app.delete("/orders/:orderId/:itemId", orders.itemdelete);
+  //delete item from item list
+  app.delete("/items/:itemId", orders.deleteitem);
+
+  //Delete an item from order
+  app.delete("/orders/:orderId/:ItemId", orders.itemdelete);
 };

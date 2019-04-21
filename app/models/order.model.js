@@ -13,27 +13,18 @@ const OrderSchema = mongoose.Schema({
   createdDate: {
     type: String
   },
-  items: { type: [], ref: "Item" }
+  items: [
+    {
+      Itemid: {
+        type: Schema.Types.ObjectId,
+        ref: "Item"
+      },
+      Qty: {
+        type: Number
+      }
+      // ref: "Item"
+    }
+  ]
 });
 
 module.exports = mongoose.model("Order", OrderSchema);
-
-// items:[{
-
-//     Itemname: {
-//         type: String,
-
-//     },
-//     Qty: {
-//         type: Number,
-
-//     },
-//     unitprice:{
-//         type:Number
-//     }
-
-// }]
-
-// updateMenuById: function (orderId,itemId, menu, callback) {
-//     return db.query("update Order set itemId=?,itemName=?,unitPrice=?,Qty=? where orderId=? and itemId=?", [Item.itemId,Item.itemName,Item.unitPrice,Item.Qty, orderId,itemId], callback);
-// }
