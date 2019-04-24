@@ -1,13 +1,27 @@
 const Joi = require("joi");
 Joi.objectId = require("joi-objectid")(Joi);
-
+const mongoose = require("mongoose");
 const express = require("express");
 const bodyParser = require("body-parser");
 const users = require("./app/routes/user.routes.js");
 const user_auth = require("./app/routes/user_auth.routes.js");
+let morgan = require("morgan");
+let app = express();
+let config = require("config"); //we load the db location from the JSON files
+//db options
+let options = {
+  server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
+  replset: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } }
+};
 
-// create express app
-const app = express();
+// //db connection
+const dburl = config.get("dbConfig.url");
+
+//don't show the log when it is test
+if (config.util.getEnv("NODE_ENV") !== "test") {
+  //use morgan to log at command line
+  app.use(morgan("combined")); //'combined' outputs the Apache style LOGs
+}
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -15,9 +29,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
 
-// Configuring the database
-const dbConfig = require("./config/database.config.js");
-const mongoose = require("mongoose");
+//Configuring the database
+//const dbConfig = require("./config/database.config.js");
 
 var cors = require("cors");
 
@@ -27,7 +40,7 @@ mongoose.Promise = global.Promise;
 
 // Connecting to the database
 mongoose
-  .connect(dbConfig.url, {
+  .connect(dburl, {
     useNewUrlParser: true
   })
   .then(() => {
@@ -48,22 +61,8 @@ require("./app/routes/order.routes.js")(app);
 app.use("/users", users);
 app.use("/user_auth", user_auth);
 
-//require('./app/routes/user.routes.js')(app);
-//app.use(require('./routes/user.routes.js'));
-
-/*
-var http = require("http");
-
-app.options("/url...", function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "POST");
-  res.header("Access-Control-Allow-Headers", "accept, content-type");
-  res.header("Access-Control-Max-Age", "1728000");
-  return res.sendStatus(200);
-});
-*/
-
 // listen for requests
 app.listen(5000, () => {
   console.log("Server is listening on port 5000");
 });
+module.exports = app; // for testing
