@@ -1,11 +1,9 @@
 const Order = require("../models/order.model.js");
 const Item = require("../models/item.model.js");
+
 // Create and Save a new order
 exports.create = (req, res) => {
-  // console.log("**********");
-  // console.log(req.body.customerName);
-  // Validate request
-  if (!req.body.items) {
+  if (!req.body.customerName) {
     return res.status(400).send({
       message: "Order content can not be empty"
     });
@@ -80,7 +78,6 @@ exports.itemcreate = (req, res) => {
 
 //create new item and post it to existing order
 exports.createItem = (req, res) => {
-  console.log("************");
   console.log(req.body.ItemId);
   console.log(req.body.Qty);
 
@@ -197,28 +194,14 @@ exports.findOneItem = (req, res) => {
 
 // Update the item count in particular order in order detailed view
 exports.update = (req, res) => {
-  // Validate Request
-
-  // Order.findByIdAndUpdate(req.params.orderId,req.params.itemId, req.body, function (err, order) {
-
-  //     if (err) {
-  //         res.json(err);
-  //     }
-  //     else {
-  //         res.json(req.body);
-  //     }
-  // });
-
   if (!req.body.Qty) {
     return res.status(400).send({
       message: "Item quantity can not be empty"
     });
   }
-  //console.log(req.body.orderName);
   console.log(req.params);
   console.log(req.params.itemId);
-  // console.log(Item);
-  // Find item and update it with the request body
+
   const updatedData = {
     Qty: req.body.Qty,
     ItemId: req.params.itemId
@@ -227,10 +210,6 @@ exports.update = (req, res) => {
   Order.findByIdAndUpdate(
     req.params.orderId,
     updatedData,
-    // items: {
-    //     ItemId: req.params.itemId,
-    //      Qty: req.body.Qty
-    //  }
 
     { new: true }
   )
@@ -253,21 +232,6 @@ exports.update = (req, res) => {
         message: "Error updating note with id " + req.params.itemId
       });
     });
-
-  // const updatedData = {
-  //     Qty: req.body.Qty,
-  //     ItemId: req.params.itemId
-  // }
-
-  // Item.findOneAndUpdate({_id:req.params.orderId}, {$set:{OrderName:req.body.OrderName}}, {new: true},function(err, item) {
-  //     console.log(item);
-  //     return res.send(item)
-  //     if (err)
-  //       return res.send(err);
-
-  //     // res.send(updatedData);
-  //     //console.log(item);
-  // });
 };
 
 // Delete an  order.
@@ -346,17 +310,13 @@ exports.itemdelete = (req, res) => {
         console.log(qty);
       }
     }
+    console.log(rem);
+
     //remove empty elements from array
     var filtered = rem.filter(function(el) {
       return el;
     });
     console.log("filtered" + " " + filtered);
-
-    // var order = new Order({
-    //   customerName:order.customerName,
-    //   createdDate: order.createdDate,
-    //   items:
-    // });
 
     const addOrder = Order.findByIdAndUpdate(req.params.orderId, {
       $set: {
@@ -382,64 +342,3 @@ exports.itemdelete = (req, res) => {
     );
   });
 };
-
-//Delete an item from order
-// exports.itemdelete = (req, res) => {
-//   // console.log(req.params.itemId);
-
-//   //Remone item from order
-
-//   // Order.findByIdAndRemove([req.params.orderId,req.params.ItemId])
-//   //   // orderId:req.params.orderId}
-
-//   // .then(item => {
-//   //     if(!item) {
-//   //         console.log(request.params.ItemId);
-//   //         return res.status(404).send({
-//   //             message: "Item not found with id " + req.params.itemId
-//   //         });
-//   //     }
-//   //     res.send({message: "Item deleted successfully!"});
-//   // }).catch(err => {
-//   //     if(err.kind === 'ObjectId' || err.name === 'NotFound') {
-//   //         return res.status(404).send({
-//   //             message: "Item not found with id " + req.params.itemId
-//   //         });
-//   //     }
-//   //     return res.status(500).send({
-//   //         message: "Could not delete note with id " + req.params.itemId
-//   //     });
-//   // });
-
-//   // Order.findByIdAndRemove({_id: [req.params.orderId,req.params.itemId]},function(err, item){
-
-//   //     if (err)
-//   //       res.send(err);
-//   //     //res.send("item deleted successfully");
-
-//   // });
-
-//   exports.findOneOrder = (req, res) => {
-//     console.log(req.params.orderId);
-//     Order.findById(req.params.orderId)
-//       .then(order => {
-//         if (!order) {
-//           return res.status(404).send({
-//             message: "Order not found with id " + req.params.orderId
-//           });
-//         }
-//         console.log(order);
-//         res.send(order);
-//       })
-//       .catch(err => {
-//         if (err.kind === "ObjectId") {
-//           return res.status(404).send({
-//             message: "Note not found with id " + req.params.orderId
-//           });
-//         }
-//         return res.status(500).send({
-//           message: "Error retrieving note with id " + req.params.orderId
-//         });
-//       });
-//   };
-// };
