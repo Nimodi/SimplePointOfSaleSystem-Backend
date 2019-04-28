@@ -16,7 +16,8 @@ module.exports = app => {
 
   //get all items
   app.get("/items", orders.findAllItems);
-  // Retrieve a single Note with noteId
+
+  // Retrieve a single order with orderId
   app.get("/orders/:orderId", orders.findOneOrder);
   app.get("/orders/items/:itemId", orders.findOneItem);
 

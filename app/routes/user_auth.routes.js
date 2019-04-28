@@ -1,6 +1,5 @@
 const Joi = require("joi");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const { User } = require("../models/user.model.js");
 const express = require("express");
 const router = express.Router();
@@ -24,10 +23,6 @@ router.post("/", async (req, res) => {
   if (!validPassword) {
     return res.status(400).send("Incorrect email or password.");
   }
-  //adding json web tokens
-  const token = jwt.sign({ _id: user._id }, "PrivateKey");
-  // res.header('x-auth-token', token).send(_.pick(user, ['_id', 'name', 'email']));
-  res.send(token);
 });
 
 function validate(req) {
